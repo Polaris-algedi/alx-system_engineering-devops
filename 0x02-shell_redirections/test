@@ -25,3 +25,4 @@ sshd:x:105:65534::/run/sshd:/usr/sbin/nologin
 mysql:x:106:107:MySQL Server,,,:/var/lib/mysql/:/bin/false
 telnetd:x:107:108::/nonexistent:/usr/sbin/nologin
 telnetd:x:107:108::/nonexistent:/usr/sbin/nologin
+telnetd:x:107:108::/nonexistent:/usr/sbin/nologin

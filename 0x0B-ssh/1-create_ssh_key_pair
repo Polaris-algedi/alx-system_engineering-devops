@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 # Generate an RSA key pair with a key size of 4096 bits
+# The key will be protected by the passphrase "betty"
+# The private key will be saved in the file "school"
 
-ssh-keygen -b 4096 -f school -N 'betty'
+ssh-keygen -b 4096 -f school -N betty

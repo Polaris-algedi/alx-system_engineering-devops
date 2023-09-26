@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Script that install nginx on your web-01 server
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+# Create a custom index.html file with "Hello World!" message
+echo "Hello World!" > /var/www/html/index.html
+service nginx restart

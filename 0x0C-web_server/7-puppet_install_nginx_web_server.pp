@@ -4,10 +4,8 @@ package { 'nginx':
   ensure => 'installed',
 }
 
-file {'/var/www/html/index.html':
-  ensure => 'present',
+file {'/var/www/html/index.nginx-debian.html':
   content => 'Hello World!',
-  mode => '0644',
 }
 
 file_line {'configure redirection':
@@ -18,6 +16,4 @@ file_line {'configure redirection':
 
 service { 'nginx':
   ensure => running,
-  enable => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
 }

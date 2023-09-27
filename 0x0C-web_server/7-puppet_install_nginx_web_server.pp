@@ -5,7 +5,9 @@ package { 'nginx':
 }
 
 file {'/var/www/html/index.html':
+  ensure => 'present',
   content => 'Hello World!',
+  mode => '0644',
 }
 
 file_line {'configure redirection':

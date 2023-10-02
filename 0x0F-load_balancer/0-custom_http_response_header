@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Configure my Nginx server to have a custom 404 page
+# that contains the string: "Ceci n'est pas une page".
+
+sudo apt update
+sudo apt install -y nginx
+sudo ufw allow 'Nginx HTTP'
+sudo mkdir -p /var/www/html/test/
+echo "Hello World!" | sudo tee "/var/www/html/test/index.html"
+error_page="/var/www/html/test/custom_404.html"
+echo "Ceci n'est pas une page" | sudo tee $error_page
+
+echo "events {}
+
+    http {
+
+        server {
+            listen 80 default_server;
+            listen [::]:80 default_server;
+
+	    add_header X-Served-By $HOSTNAME;
+
+            server_name purepolaris.tech;
+
+            root /var/www/html/test;
+            index index.html;
+
+            location /redirect_me {
+                return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+            }
+        
+            error_page 404 /custom_404.html;
+            location = /custom_404.html {
+                internal;
+            }
+        }
+}" > nginx.conf
+
+sudo mv -f nginx.conf /etc/nginx/nginx.conf
+sudo service nginx restart

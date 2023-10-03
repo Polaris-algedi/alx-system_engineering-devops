@@ -31,22 +31,6 @@ package { 'nginx':
   before => File['/etc/nginx/nginx.conf'],
 }
 
-file { '/var/www/html/test':
-  ensure => directory,
-  mode   => '0755',
-}
-
-file { '/var/www/html/test/index.html':
-  ensure  => present,
-  content => 'Hello World!',
-  mode    => '0644',
-}
-
-file { '/var/www/html/test/custom_404.html':
-  ensure  => present,
-  content => "Ceci n'est pas une page",
-  mode    => '0644',
-}
 
 file { '/etc/nginx/nginx.conf':
   ensure  => present,

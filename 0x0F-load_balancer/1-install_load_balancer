@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Install and configure HAproxy on my lb-01 server
+# Update the package lists for upgrades and new package installations
+sudo apt-get update
+
+# Install HAProxy
+sudo apt-get install -y haproxy
+
+# Enable HAProxy to be started by the init script
+sudo systemctl enable haproxy
+
+# Define the configuration file path
+HAPROXY_CFG="/etc/haproxy/haproxy.cfg"
+
+# Backup the original configuration file
+sudo cp $HAPROXY_CFG $HAPROXY_CFG.bak
+
+# Define the frontend and backend configuration
+read -r -d '' CONFIG << EOM
+\\nfrontend localnodes
+        bind *:80
+        mode http
+        default_backend nodes
+
+backend nodes
+        mode http
+        balance roundrobin
+        option forwardfor
+        http-request set-header X-Forwarded-Port %[dst_port]
+        http-request add-header X-Forwarded-Proto https if { ssl_fc }
+        server 248550-web-01 100.26.177.153:80 check
+        server 248550-web-02 54.87.239.21:80 check
+EOM
+
+# Append the configuration to the HAProxy configuration file
+echo -e "$CONFIG" | sudo tee -a $HAPROXY_CFG
+
+# Restart HAProxy to apply the changes
+sudo service haproxy restart

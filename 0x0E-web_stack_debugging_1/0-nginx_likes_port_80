@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Nginx must be running, and listening on port 80 of all the server’s active IPv4 IPs
+# Check if Nginx is installed
+if ! command -v nginx > /dev/null 2>&1; then
+    # Install Nginx
+    sudo apt-get update > /dev/null 2>&1
+    sudo apt-get install -y nginx > /dev/null 2>&1
+fi
+
+# Start Nginx service
+sudo service nginx start
+
+# Ensure Nginx is running on port 80
+if ! sudo ss -plntu | grep ':80 ' > /dev/null 2>&1; then
+    echo "Nginx is not running on port 80"
+    exit 1
+fi
+
+echo "Nginx is running on port 80"

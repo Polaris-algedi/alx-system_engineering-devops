@@ -23,11 +23,11 @@ def get_todo_list_progress(employee_id):
 
     user_response = requests.get(user_url)
     todos_response = requests.get(todos_url)
-
+    """
     if user_response.status_code != 200 or todos_response.status_code != 200:
         print("Error: Unable to fetch data from API")
         return
-
+    """
     user_data = user_response.json()
     todos_data = todos_response.json()
 

@@ -7,11 +7,14 @@ the function should return None.
 """
 import requests
 
+PAGE = None
 
-def recurse(subreddit, hot_list=[], after=None):
+
+def recurse(subreddit, hot_list=[]):
+    global PAGE
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {'User-agent': 'Mozilla/5.0'}
-    params = {'after': after}
+    params = {'after': PAGE}
     response = requests.get(url, headers=headers, params=params)
 
     if response.status_code != 200:
@@ -23,8 +26,8 @@ def recurse(subreddit, hot_list=[], after=None):
     for post in posts:
         hot_list.append(post['data']['title'])
 
-    after = data['data']['after']
-    if after is not None:
-        return recurse(subreddit, hot_list, after)
+    PAGE = data['data']['after']
+    if PAGE is not None:
+        return recurse(subreddit, hot_list)
     else:
         return hot_list
